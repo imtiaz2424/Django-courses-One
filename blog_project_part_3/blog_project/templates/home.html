@@ -1,76 +1,51 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content  %}
-
-<div class="d-flex flex-wrap px-5 pt-3 align-items-center">
-  <div class="col-6">
-    <h1>Welcome to my Blog</h1>
-    <p>When you land on a sample web page or open an email template and see content beginning with "lorem ipsum," the page creator placed that apparent gibberish there on purpose.
-      Page layouts look better with something in each section. Web page designers, content writers, and layout artists use lorem ipsum, also known as placeholder copy, to distinguish which areas on a page will hold advertisements, editorials, and filler before the final written content and website designs receive client approval.</p>
-  </div>
-  <div class="col-6">
-    <img src="{% static 'header.jpg' %}"/>
-    
-  </div>
-
-</div>
-
-
-<div class="d-flex flex-wrap p-4">
-  <div class="col-2 bg-white p-3">
-    <h5>All Categories</h5>
-
-
-    {% for cat in category %}
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="category" id="{{cat.id}}"/>
-        <label class="form-check-label" for="{{cat.id}}">
-          
-          <a href="{% url 'category_wise_post' cat.slug %}" class="text-decoration-none text-primary">{{cat.name}}</a>
-        </label>
-      </div>
-    
-    {% endfor %}  
-    
-    
-
-  </div>
-
-
-
-  <div class="col-10 p-3">
-
-    <h3>{{data | length}} results found</h3>
-        <div class="d-flex flex-wrap pt-5">
-
-      {% for post in data %}
-
-      <div class="col-sm-3">
-        <div class="card m-2">
-          <div class="card-body">
-            <h5 class="card-title">{{post.title}}</h5>
-            <p class="card-text">{{post.content}}</p>
-            <p>Author : {{post.author.first_name}} {{post.author.last_name}}</p>
-            <p>Category : 
-              {% for cat in post.category.all %}
-              <button class="btn btn-primary btn-sm m-2" disabled >{{cat.name}}</button>
-              {% endfor %}
-            </p>        
-          </div>
-        </div>
-      </div> 
-
-      {% endfor %}
-    
+{% block content %}
+  <div class="d-flex flex-wrap px-5 pt-3 align-items-center">
+    <div class="col-6">
+      <h1>Welcome to my Blog</h1>
+      <p>When you land on a sample web page or open an email template and see content beginning with "lorem ipsum," the page creator placed that apparent gibberish there on purpose. Page layouts look better with something in each section. Web page designers, content writers, and layout artists use lorem ipsum, also known as placeholder copy, to distinguish which areas on a page will hold advertisements, editorials, and filler before the final written content and website designs receive client approval.</p>
+    </div>
+    <div class="col-6">
+      <img src="{% static 'header.jpg' %}" />
     </div>
   </div>
-</div>
 
+  <div class="d-flex flex-wrap p-4">
+    <div class="col-2 bg-white p-3">
+      <h5>All Categories</h5>
 
+      {% for cat in category %}
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="category" id="{{ cat.id }}" />
+          <label class="form-check-label" for="{{ cat.id }}"><a href="{% url 'category_wise_post' cat.slug %}" class="text-decoration-none text-primary">{{ cat.name }}</a></label>
+        </div>
+      {% endfor %}
+    </div>
 
-
-
-
-{% endblock  %}
-
-
+    <div class="col-10 p-3">
+      <h3>{{ data|length }} results found</h3>
+      <div class="d-flex flex-wrap pt-5">
+        {% for post in data %}
+          <div class="col-sm-3">
+            <div class="card m-2">
+              <div class="card-body">
+                <a href="{% url 'detail_post' post.id %}" class="text-decoration-none text-dark" ><img src="{{ post.image.url }}" class="card-img-top" alt="" />                
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.content|truncatewords:12 }}</p>
+                </a>
+                <br/>
+                <p>Author : {{ post.author.first_name }} {{ post.author.last_name }}</p>
+                <p>Category :
+                  {% for cat in post.category.all %}
+                    <button class="btn btn-primary btn-sm m-2" disabled>{{ cat.name }}</button>                
+                  {% endfor %}
+                </p>                
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
