@@ -17,16 +17,17 @@
         </p>
       </div>
 
-      <div class="card p-2">
-        <h3>Total Comments : {{ comments|length }}</h3>
-        <div class="card-body">
-          {% for comment in comment %}
-            <p>{{ comment.name }}</p>
+      <div class="card m-2">
+        <h4 class="p-3">Total Comments : {{ comments|length }}</h4>
+        {% for comment in comments %}
+        <div class="card-body border m-2">
+            <p><b>{{ comment.name }}</b> {{ comment.created_on }}</p>
+            <p>{{ comment.body }}</p>
+          </div>
           {% endfor %}
-        </div>
       </div>
 
-      <div class="card">
+      <div class="card m-2">
         <div class="card-body">
           <form method="post">
             <h1>Add your comment</h1>
